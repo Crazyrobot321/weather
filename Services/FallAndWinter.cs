@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using weather.Models;
+using weather.Entities;
 
 namespace weather.Services
 {
@@ -10,7 +10,6 @@ namespace weather.Services
         public static void CalcFallAndWinter(List<Measurement> measurements, string choice)
         {
             ParseAndFilter.ParseOchFiltreraMeasurements(measurements, null, false, "ute");
-            List<string> toWrite = new();
             var sortedDays = measurements
                 .GroupBy(m => m.Datum.Date)
                 .Select(g => new
@@ -41,20 +40,19 @@ namespace weather.Services
                     }
                 }
                 Console.WriteLine($"Höst började: {FallStart}");
-                toWrite.Add($"Höst började: {FallStart}");
             }
             else if (choice == "winter")
             {
-                foreach (var day in sortedDays)
+                foreach (var dag in sortedDays)
                 {
-                    if (day.AvgTemp <= 0.0)
+                    if (dag.AvgTemp <= 0.0)
                         dagarIrad++;
                     else
                         dagarIrad = 0;
 
                     if (dagarIrad == 5)
                     {
-                        WinterStart = day.Date.AddDays(-4);
+                        WinterStart = dag.Date.AddDays(-4);
                         break;
                     }
                 }
@@ -73,7 +71,6 @@ namespace weather.Services
                             dagarIrad == 5 ? $"Vinter började: {WinterStart}" :
                             "Error";
                         Console.WriteLine(didWinterStart);
-                        toWrite.Add(didWinterStart);
                     }
                 }
             }
@@ -81,7 +78,6 @@ namespace weather.Services
             {
                 Console.WriteLine("Inget val");
             }
-            FileHandling.WriteFile(toWrite);
         }
 
     }

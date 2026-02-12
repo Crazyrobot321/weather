@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using weather.Models;
+using weather.Entities;
 
 namespace weather.Services
 {

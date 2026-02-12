@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using weather.Models;
+using weather.Entities;
 using weather.Services;
 using weather.Plats;
 namespace weather
@@ -33,7 +33,8 @@ namespace weather
                             Inne.Indoor();
                             break;
                         case 3:
-                            Sorting.WriteToFile(measurements);
+                            ParseAndFilter.ParseOchFiltreraMeasurements(measurements, null, false, "ute|inne");
+                            FileHandling.CreateFinalReport(measurements);
                             break;
                         case 4:
                             return;

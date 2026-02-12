@@ -4,7 +4,7 @@ using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using weather.Models;
+using weather.Entities;
 using weather.Services;
 
 namespace weather.Plats
