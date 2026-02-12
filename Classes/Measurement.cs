@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace weather
+namespace weather.Classes
 {
     public class Measurement
     {
