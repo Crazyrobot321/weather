@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using weather.Classes;
+using weather.Models;
 
-namespace weather.FilterMeasurements
+namespace weather.Services
 {
     public class ParseAndFilter
     {
@@ -21,7 +21,7 @@ namespace weather.FilterMeasurements
                     string dateText = match.Groups["datum"].Value;
                     if (!DateTime.TryParse(dateText, CultureInfo.InvariantCulture, out DateTime datum))
                     {
-                        Console.WriteLine($"Invalid date found '{dateText}', skipping...");
+                        //Console.WriteLine($"Invalid date found '{dateText}', skipping...");
                         continue;
                     }
                     if (specificDate && !selectedDate.HasValue)
@@ -37,7 +37,8 @@ namespace weather.FilterMeasurements
                             {   //InvariantCulture används för att undvika problem med decimaltecken pga regionsinställningar
                                 Datum = datum,
                                 Temperature = double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture),
-                                Humidity = double.Parse(match.Groups["fuktighet"].Value, CultureInfo.InvariantCulture)
+                                Humidity = double.Parse(match.Groups["fuktighet"].Value, CultureInfo.InvariantCulture),
+                                Location = match.Groups["plats"].Value
                             });
                         }
                     }
@@ -47,7 +48,8 @@ namespace weather.FilterMeasurements
                         {
                             Datum = datum,
                             Temperature = double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture),
-                            Humidity = double.Parse(match.Groups["fuktighet"].Value, CultureInfo.InvariantCulture)
+                            Humidity = double.Parse(match.Groups["fuktighet"].Value, CultureInfo.InvariantCulture),
+                            Location = match.Groups["plats"].Value
                         });
                     }
 
