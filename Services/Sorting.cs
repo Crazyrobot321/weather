@@ -15,14 +15,14 @@ namespace weather.Services
                 .Select(g => new
                 {
                     Date = g.Key,
-                    AvgTemp = g.Average(x => x.Temperature),
-                    AvgHumidity = g.Average(x => x.Humidity)
+                    MedelTemp = g.Average(x => x.Temperatur),
+                    MedelFuktighetidity = g.Average(x => x.Fuktighet)
                 })
-                .OrderByDescending(order => order.AvgTemp)
+                .OrderByDescending(order => order.MedelTemp)
                 .ToList();
             foreach (var line in result)
             {
-                Console.WriteLine($"{line.Date:yyyy-MM-dd} | Medeltemp: {line.AvgTemp:F1}°C | Medelluftfuktighet: {line.AvgHumidity:F1}%");
+                Console.WriteLine($"{line.Date:yyyy-MM-dd} | Medeltemp: {line.MedelTemp:F1}°C | Medelluftfuktighet: {line.MedelFuktighetidity:F1}%");
             }
         }
         public static void Sort_Torraste(List<Measurement> measurements, string plats)
@@ -33,14 +33,14 @@ namespace weather.Services
                 .Select(g => new 
                 { 
                     Date = g.Key, 
-                    AvgTemp = g.Average(x => x.Temperature), 
-                    AvgHumidity = g.Average(x => x.Humidity) 
+                    MedelTemp = g.Average(x => x.Temperatur), 
+                    MedelFuktighetidity = g.Average(x => x.Fuktighet) 
                 })
-                .OrderBy(order => order.AvgHumidity)
+                .OrderBy(order => order.MedelFuktighetidity)
                 .ToList();
             foreach (var line in result)
             {
-                Console.WriteLine($"{line.Date:yyyy-MM-dd} | Medelluftfuktighet: {line.AvgHumidity:F1}% | Medeltemp: {line.AvgTemp:F1}°C");
+                Console.WriteLine($"{line.Date:yyyy-MM-dd} | Medelluftfuktighet: {line.MedelFuktighetidity:F1}% | Medeltemp: {line.MedelTemp:F1}°C");
             }
         }
         public static void Mold_Risk(List<Measurement> measurements, string plats)
@@ -51,9 +51,9 @@ namespace weather.Services
                 .Select(g => new
                 {
                     Date = g.Key,
-                    AvgTemp = g.Average(x => x.Temperature),
-                    AvgHumidity = g.Average(x => x.Humidity),
-                    UteRisk = Math.Clamp((g.Average(x => x.Humidity) - 75) * (g.Average(x => x.Temperature) / 15) * 22, 0, 100),
+                    MedelTemp = g.Average(x => x.Temperatur),
+                    MedelFuktighetidity = g.Average(x => x.Fuktighet),
+                    UteRisk = Math.Clamp((g.Average(x => x.Fuktighet) - 75) * (g.Average(x => x.Temperatur) / 15) * 22, 0, 100),
                 })
                 .OrderByDescending(order => order.UteRisk)
                 .ToList();
@@ -69,7 +69,7 @@ namespace weather.Services
                     line.UteRisk < 45 ? "Medel" :
                     line.UteRisk < 75 ? "Hög" :
                     "Mycket hög";
-                Console.WriteLine($"{line.Date:yyyy-MM-dd} | Risk för mögel: {riskLevel} ({line.UteRisk:F1})% | Medelluftfuktighet: {line.AvgHumidity:F1}% | Temperatur: {line.AvgTemp:F1}°C");
+                Console.WriteLine($"{line.Date:yyyy-MM-dd} | Risk för mögel: {riskLevel} ({line.UteRisk:F1})% | Medelluftfuktighet: {line.MedelFuktighetidity:F1}% | Temperatur: {line.MedelTemp:F1}°C");
             }
             Console.ResetColor();
         }

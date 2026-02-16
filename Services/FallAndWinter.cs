@@ -15,7 +15,7 @@ namespace weather.Services
                 .Select(g => new
                 {
                     Date = g.Key,
-                    AvgTemp = g.Average(x => x.Temperature)
+                    MedelTemp = g.Average(x => x.Temperatur)
                 })
                 .OrderBy(d => d.Date)
                 .ToList();
@@ -28,7 +28,7 @@ namespace weather.Services
                 {
                     if (dag.Date < new DateTime(dag.Date.Year, 8, 1))
                         continue;
-                    if (dag.AvgTemp < 10.0)
+                    if (dag.MedelTemp < 10.0)
                         dagarIrad++;
                     else
                         dagarIrad = 0;
@@ -45,7 +45,7 @@ namespace weather.Services
             {
                 foreach (var dag in sortedDays)
                 {
-                    if (dag.AvgTemp <= 0.0)
+                    if (dag.MedelTemp <= 0.0)
                         dagarIrad++;
                     else
                         dagarIrad = 0;
@@ -60,7 +60,7 @@ namespace weather.Services
                 {
                     var fristColdDay = sortedDays
                         .OrderBy(d => d.Date)
-                        .Where(d => Math.Round(d.AvgTemp, 1) <= 0.0)
+                        .Where(d => Math.Round(d.MedelTemp, 1) <= 0.0)
                         .FirstOrDefault();
 
                     if (fristColdDay != null)

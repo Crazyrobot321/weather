@@ -30,7 +30,7 @@ namespace weather.Services
         }
         public static void WriteFile(List<string> content)
         {
-            string filename = "TextFile1.txt";
+            string filename = "output.txt";
             try
             {
                 using (StreamWriter writer = new StreamWriter("../../../Files/Output/" + filename, true))
@@ -69,38 +69,38 @@ namespace weather.Services
                 {
                     g.Key.Year,
                     g.Key.Month,
-                    AvgTempUte = g.Where(x => x.Location == "Ute").Average(x => x.Temperature),
-                    AvgHumUte = g.Where(x => x.Location == "Ute").Average(x => x.Humidity),
-                    AvgTempInne = g.Where(x => x.Location == "Inne").Average(x => x.Temperature),
-                    AvgHumInne = g.Where(x => x.Location == "Inne").Average(x => x.Humidity),
+                    MedelTempUte = g.Where(x => x.Plats == "Ute").Average(x => x.Temperatur),
+                    MedelFuktighetUte = g.Where(x => x.Plats == "Ute").Average(x => x.Fuktighet),
+                    MedelTempInne = g.Where(x => x.Plats == "Inne").Average(x => x.Temperatur),
+                    MedelFuktighetInne = g.Where(x => x.Plats == "Inne").Average(x => x.Fuktighet),
 
-                    UteRisk = Math.Clamp((g.Where(x => x.Location == "Ute").Average(x => x.Humidity) - 75) *
-                                         (g.Where(x => x.Location == "Ute").Average(x => x.Temperature) / 15) * 22, 0, 100),
+                    UteRisk = Math.Clamp((g.Where(x => x.Plats == "Ute").Average(x => x.Fuktighet) - 75) *
+                                         (g.Where(x => x.Plats == "Ute").Average(x => x.Temperatur) / 15) * 22, 0, 100),
 
-                    InneRisk = Math.Clamp((g.Where(x => x.Location == "Inne").Average(x => x.Humidity) - 75) *
-                                          (g.Where(x => x.Location == "Inne").Average(x => x.Temperature) / 15) * 22, 0, 100)
+                    InneRisk = Math.Clamp((g.Where(x => x.Plats == "Inne").Average(x => x.Fuktighet) - 20) *
+                                          (g.Where(x => x.Plats == "Inne").Average(x => x.Temperatur) / 15) * 1, 0, 100)
                 })
                 .OrderBy(x => x.Year).ThenBy(x => x.Month)
                 .ToList();
 
             foreach (var line in monthlyData)
             {
-                reportLines.Add($"{line.Year}-{line.Month:D2} | Medelluftfuktighet inne/ute: ({line.AvgHumInne:F1})({line.AvgHumUte:F1})%" +
-                    $" | Medeltemp inne/ute: ({line.AvgTempInne:F1})({line.AvgTempUte:F1})°C" +
+                reportLines.Add($"{line.Year}-{line.Month:D2} | Medelluftfuktighet inne/ute: ({line.MedelFuktighetInne:F1})({line.MedelFuktighetUte:F1})%" +
+                    $" | Medeltemp inne/ute: ({line.MedelTempInne:F1})({line.MedelTempUte:F1})°C" +
                     $" | Mögelrisk inne/ute: ({line.InneRisk:F1})({line.UteRisk:F1})%");
             }
             reportLines.Add("");
 
             //Kollar säsongerna
-            reportLines.Add("=== SÄSONGSSTART 2016 ====");
+            reportLines.Add("===SÄSONGSSTART 2016====");
 
             var Meterologisk = measurements
-                .Where(m => m.Location == "Ute")
+                .Where(m => m.Plats == "Ute")
                 .GroupBy(m => m.Datum.Date)
                 .Select(g => new
                 {
                     Date = g.Key,
-                    AvgTemp = g.Average(x => x.Temperature)
+                    MedelTemp = g.Average(x => x.Temperatur)
                 })
                 .OrderBy(d => d.Date)
                 .ToList();
@@ -111,7 +111,7 @@ namespace weather.Services
             {
                 if (dag.Date < new DateTime(dag.Date.Year, 8, 1)) //Datumet är minst den 1a augusti
                     continue;
-                if (dag.AvgTemp < 10.0)
+                if (dag.MedelTemp < 10.0)
                     count++;
                 else
                     count = 0;
@@ -129,7 +129,7 @@ namespace weather.Services
             count = 0;
             foreach (var dag in Meterologisk)
             {
-                if (dag.AvgTemp <= 0.0)
+                if (dag.MedelTemp <= 0.0)
                     count++;
                 else
                     count = 0;
@@ -144,21 +144,23 @@ namespace weather.Services
             {
                 var fristColdDay = Meterologisk
                     .OrderBy(d => d.Date)
-                    .Where(d => Math.Round(d.AvgTemp, 1) <= 0.0)
+                    .Where(d => Math.Round(d.MedelTemp, 1) <= 0.0)
                     .FirstOrDefault();
 
                 if (fristColdDay != null)
                 {
                     winterResult = fristColdDay.Date;
                     string didWinterStart =
-                        count < 5 ? $"Det uppstod inte 5 dagar i rad med < 0 grader, visar närmsta dag {winterResult}" :
+                        count < 5 ? $"Vintern uppstod inte meterologiskt, visar närmsta dag {winterResult}" :
                         count == 5 ? $"Vinter började: {winterResult}" :
                         "Error";
                     reportLines.Add(didWinterStart);
 
                 }
             }
-
+            reportLines.Add("");
+            reportLines.Add("================");
+            reportLines.Add("Datan skrevs ut: " + DateTime.Now);
             // 4. SKRIV TILL FIL
             WriteFile(reportLines);
         }

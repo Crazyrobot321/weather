@@ -23,8 +23,8 @@ namespace weather.Services
                 .Select(g => new
                 {
                     Date = g.Key,
-                    AvgTemp = g.Average(x => x.Temperature),
-                    AvgHumidity = g.Average(x => x.Humidity)
+                    MedelTemp = g.Average(x => x.Temperatur),
+                    MedelFuktighetidity = g.Average(x => x.Fuktighet)
                 })
                 .FirstOrDefault();
 
@@ -34,7 +34,7 @@ namespace weather.Services
             }
             else
             {
-                Console.WriteLine($"{result.Date:yyyy-MM-dd} | Medeltemp: {result.AvgTemp:F1}°C | Medelluftfuktighet: {result.AvgHumidity:F1}%");
+                Console.WriteLine($"{result.Date:yyyy-MM-dd} | Medeltemp: {result.MedelTemp:F1}°C | Medelluftfuktighet: {result.MedelFuktighetidity:F1}%");
             }
         }
     }

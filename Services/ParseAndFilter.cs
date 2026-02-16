@@ -11,7 +11,7 @@ namespace weather.Services
     {
         internal static void ParseOchFiltreraMeasurements(List<Measurement> measurements, DateTime? selectedDate, bool specificDate, string location)
         {
-            string pattern = $@"^(?<datum>\d{{4}}-\d{{1,2}}-\d{{1,2}})\W(?<tid>\d{{2}}:\d{{2}}:\d{{2}}),(?<plats>{location}),(?<temp>\d{{1,2}}[\.,]\d{{1,2}}),(?<fuktighet>\d{{1,3}})$";
+            string pattern = $@"^(?<datum>\d{{4}}-\d{{1,2}}-\d{{1,2}})\W(?<tid>\d{{2}}:\d{{2}}:\d{{2}}),(?<plats>{location}),(?<temp>-?\d{{1,2}}[\.,]\d{{1,2}}),(?<fuktighet>\d{{1,3}})$";
             foreach (var line in Program.lines)
             {
                 var match = Regex.Match(line, pattern, RegexOptions.IgnoreCase);
@@ -36,9 +36,9 @@ namespace weather.Services
                             measurements.Add(new Measurement
                             {   //InvariantCulture används för att undvika problem med decimaltecken pga regionsinställningar
                                 Datum = datum,
-                                Temperature = double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture),
-                                Humidity = double.Parse(match.Groups["fuktighet"].Value, CultureInfo.InvariantCulture),
-                                Location = match.Groups["plats"].Value
+                                Temperatur = double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture),
+                                Fuktighet = double.Parse(match.Groups["fuktighet"].Value, CultureInfo.InvariantCulture),
+                                Plats = match.Groups["plats"].Value
                             });
                         }
                     }
@@ -47,9 +47,9 @@ namespace weather.Services
                         measurements.Add(new Measurement
                         {
                             Datum = datum,
-                            Temperature = double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture),
-                            Humidity = double.Parse(match.Groups["fuktighet"].Value, CultureInfo.InvariantCulture),
-                            Location = match.Groups["plats"].Value
+                            Temperatur = double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture),
+                            Fuktighet = double.Parse(match.Groups["fuktighet"].Value, CultureInfo.InvariantCulture),
+                            Plats = match.Groups["plats"].Value
                         });
                     }
 

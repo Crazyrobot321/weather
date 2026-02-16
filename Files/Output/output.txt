@@ -1,0 +1,24 @@
+=== FORMEL FÖR MÖGELRISK ===
+                    1. MedelRF = Average(Humidity)
+                    2. MedelTemp = Average(Temperature)
+                    3. FuktÖverskott = MedelRF - 75
+                    4. TemperaturFaktor = MedelTemp / 15
+                    5. Risken = FuktÖverskott * TemperaturFaktor
+                    6. SkaladRisk = Risken * 22
+                    7. Riskvärde = Clamp(SkaladRisk, 0, 100)
+                    
+=== MÅNADSSTATISTIK ===
+2016-06 | Medelluftfuktighet inne/ute: (28,8)(53,2)% | Medeltemp inne/ute: (24,7)(15,8)°C | Mögelrisk inne/ute: (14,4)(0,0)%
+2016-07 | Medelluftfuktighet inne/ute: (41,6)(53,0)% | Medeltemp inne/ute: (26,3)(20,2)°C | Mögelrisk inne/ute: (37,9)(0,0)%
+2016-08 | Medelluftfuktighet inne/ute: (34,6)(48,6)% | Medeltemp inne/ute: (25,6)(18,1)°C | Mögelrisk inne/ute: (24,9)(0,0)%
+2016-09 | Medelluftfuktighet inne/ute: (41,6)(60,4)% | Medeltemp inne/ute: (23,3)(16,2)°C | Mögelrisk inne/ute: (33,6)(0,0)%
+2016-10 | Medelluftfuktighet inne/ute: (27,3)(64,6)% | Medeltemp inne/ute: (22,4)(8,2)°C | Mögelrisk inne/ute: (10,9)(0,0)%
+2016-11 | Medelluftfuktighet inne/ute: (19,1)(82,9)% | Medeltemp inne/ute: (22,8)(4,5)°C | Mögelrisk inne/ute: (0,0)(51,5)%
+2016-12 | Medelluftfuktighet inne/ute: (15,8)(78,8)% | Medeltemp inne/ute: (21,8)(3,6)°C | Mögelrisk inne/ute: (0,0)(19,9)%
+
+===SÄSONGSSTART 2016====
+Hösten startade: 2016-10-04
+Vintern uppstod inte meterologiskt, visar närmsta dag 2016-12-03 00:00:00
+
+================
+Datan skrevs ut: 2026-02-16 09:05:38
